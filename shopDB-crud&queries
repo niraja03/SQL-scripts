@@ -1,0 +1,27 @@
+CREATE DATABASE IF NOT EXISTS shopdb;
+
+USE shopdb;
+
+-- Create table for customer information
+CREATE TABLE customers(
+	custID INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    address VARCHAR(200)
+);
+
+-- Insert sample customer data
+INSERT INTO customers (name, email, address)
+VALUES 
+('niraja','nirajakurra@gmail.com', 'pune'),
+('gowi', 'gowikurra@gmail.com', 'chennai'),
+('raja', 'rajakurra@gmail.com', 'jammu');
+
+-- Queries
+SELECT * FROM customers;
+SELECT name FROM customers;
+SELECT DISTINCT address FROM customers; -- data retrieve
+
+select * from customers where address like '%pune%'; 
+select * from customers where name= 'gowi' and address like '%chennai%';
+select * from customers where address not like '%jammu%';
