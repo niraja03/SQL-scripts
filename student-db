@@ -1,0 +1,49 @@
+-- Create database if not already present
+CREATE DATABASE IF NOT EXISTS studentsdb;
+
+-- Select database
+USE studentsdb;
+
+-- Check which database is currently in use
+SELECT DATABASE();
+
+-- Create table for students information
+CREATE TABLE students(
+	studentID INT AUTO_INCREMENT PRIMARY KEY,  -- Auto 1,2,3,... for serial number
+    name VARCHAR(100),
+    age TINYINT,
+    email VARCHAR(100),
+    joindate DATE
+);
+
+-- View all records in the table
+SELECT * FROM students;
+
+-- Insert some sample student data
+INSERT INTO students (name, age, email, joindate)
+VALUES 
+('niraja', 19, 'nirajakurra@gmail.com', '2025-02-21'),
+('gowi', 21, 'gowikurra@gmail.com', '2025-02-13'),
+('raja', 20, 'rajakurra@gmail.com', '2025-03-21');
+
+-- Add new column 'city' to the table
+ALTER TABLE students 
+ADD COLUMN city VARCHAR(50);  -- Modify table by adding city column
+
+-- Change data type of 'age' to smallint
+ALTER TABLE students 
+MODIFY age SMALLINT;
+
+-- Rename 'email' column to 'studentsemail'
+ALTER TABLE students 
+RENAME COLUMN email TO studentsemail;
+
+ALTER TABLE students DROP COLUMN pity;
+
+
+-- Notes:
+-- 1. You can safely write comments after a semicolon (;)
+-- 2. Or on a new line before the next SQL command.
+-- 3. Always leave one space after -- to make comments valid.
+-- 4. DROP TABLE is used to delete an entire table (its structure and data) from the database. & cannotdo undo
+-- 5. TRUNCATE TABLE is used to delete all rows from a table, but keeps the table structure.
