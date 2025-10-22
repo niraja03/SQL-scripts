@@ -1,0 +1,32 @@
+-- Step 1: Create database (if not exists)
+CREATE DATABASE IF NOT EXISTS shopdb;
+
+-- Step 2: Use the database
+USE shopdb;
+
+-- Step 3: Drop the table if it already exists (prevents error 1050)
+DROP TABLE IF EXISTS customers;
+
+-- Step 4: Create table for customer information
+CREATE TABLE customers(
+	custID INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    city VARCHAR(50)
+);
+
+-- Step 5: Insert sample customer data
+INSERT INTO customers (name, email, city)
+VALUES 
+('niraja','nirajakurra@gmail.com', 'pune'),
+('gowi', 'gowikurra@gmail.com', 'chennai'),
+('raja', 'rajakurra@gmail.com', 'jammu');
+
+-- Step 6: View all records
+SELECT * FROM customers;
+
+
+-- delete particular
+delete from customers where custID = 3;
+
+
