@@ -1,0 +1,115 @@
+-- Step 1: Create and use database
+CREATE DATABASE IF NOT EXISTS sampledb;
+USE sampledb;
+
+-- Step 2: Remove old tables (if they already exist)
+DROP TABLE IF EXISTS employees;
+DROP TABLE IF EXISTS departments;
+DROP TABLE IF EXISTS sales;
+
+-- Step 3: Create tables
+CREATE TABLE departments (
+  dept_id INT AUTO_INCREMENT PRIMARY KEY,
+  dept_name VARCHAR(50)
+);
+
+CREATE TABLE employees (
+  emp_id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(50),
+  salary INT,
+  manager_id INT,
+  dept_id INT
+);
+
+CREATE TABLE sales (
+  sale_id INT AUTO_INCREMENT PRIMARY KEY,
+  region VARCHAR(50),
+  amount INT
+);
+
+-- Step 4: Insert some simple data
+INSERT INTO departments (dept_name) VALUES
+('HR'), ('Tech'), ('Sales');
+
+INSERT INTO employees (name, salary, manager_id, dept_id) VALUES
+('Niraja', 90000, NULL, 2),
+('Ravi', 60000, 1, 2),
+('Gowri', 40000, 2, 2),
+('Meena', 50000, 1, 1),
+('Raj', 55000, 4, 1);
+
+INSERT INTO sales (region, amount) VALUES
+('South', 120000),
+('North', 80000),
+('East', 60000),
+('West', 150000);
+
+------------------------------------------------------------
+-- 🟢 TYPE 1: SIMPLE CTE
+-- Find all employees earning more than 50,000
+------------------------------------------------------------
+WITH high_salary AS (
+  SELECT name, salary
+  FROM employees
+  WHERE salary > 50000
+)
+SELECT * FROM high_salary;
+
+------------------------------------------------------------
+-- 🟢 TYPE 2: MULTIPLE CTEs
+-- One CTE for high salary, one for average salary
+------------------------------------------------------------
+WITH
+high_salary AS (
+  SELECT name, salary FROM employees WHERE salary > 50000
+),
+average_salary AS (
+  SELECT AVG(salary) AS avg_sal FROM employees
+)
+SELECT h.name, h.salary, a.avg_sal
+FROM high_salary h, average_salary a;
+
+------------------------------------------------------------
+-- 🟢 TYPE 3: RECURSIVE CTE
+-- Show manager → employee chain (like a family tree)
+------------------------------------------------------------
+WITH RECURSIVE employee_tree AS (
+  -- Base: top manager (no manager)
+  SELECT emp_id, name, manager_id
+  FROM employees
+  WHERE manager_id IS NULL
+
+  UNION ALL
+
+  -- Recursive: find people under that manager
+  SELECT e.emp_id, e.name, e.manager_id
+  FROM employees e
+  INNER JOIN employee_tree t
+  ON e.manager_id = t.emp_id
+)
+SELECT * FROM employee_tree;
+
+------------------------------------------------------------
+-- 🟢 TYPE 4: CTE WITH JOIN
+-- Combine employee & department info
+------------------------------------------------------------
+WITH emp_dept AS (
+  SELECT e.name, e.salary, d.dept_name
+  FROM employees e
+  JOIN departments d ON e.dept_id = d.dept_id
+)
+SELECT dept_name, COUNT(*) AS total_employees
+FROM emp_dept
+GROUP BY dept_name;
+
+------------------------------------------------------------
+-- 🟢 TYPE 5: CTE WITH AGGREGATION
+-- Show total sales by region where total > 1 lakh
+------------------------------------------------------------
+WITH sales_total AS (
+  SELECT region, SUM(amount) AS total_sales
+  FROM sales
+  GROUP BY region
+)
+SELECT * FROM sales_total
+WHERE total_sales > 100000;
