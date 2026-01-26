@@ -18,3 +18,10 @@
 12. Common Table Expressions (CTEs)
 13. Views
 14. Practical Queries for Real-World Scenarios
+
+
+sql scripts : Add SQL practice scripts
+create_tables.sql
+insert_data.sql
+joins_practice.sql
+subqueries.sql
