@@ -13,3 +13,25 @@ WHERE (
     CITY LIKE '%I' OR
     CITY LIKE '%O' OR
     CITY LIKE '%U'  ) ;
+
+
+OR --->
+
+
+SELECT DISTINCT CITY 
+FROM STATION
+WHERE 
+CITY REGEXP '^[AEIOU]'
+AND 
+CITY REGEXP '[AEIOU]$' ;
+
+
+OR --->
+
+
+SELECT DISTINCT CITY 
+FROM STATION
+WHERE 
+    LEFT(CITY, 1) IN ('A','E', 'I' , 'O', 'U')
+    AND 
+    RIGHT(CITY, 1) IN ('A','E', 'I' , 'O', 'U');
